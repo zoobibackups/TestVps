@@ -11,22 +11,23 @@ import {
 } from 'react-native';
 import {
   CharonErrorState,
+  NEVPNIKEv2CertificateType,
+  VpnState,
   connect,
   disconnect,
   getCharonErrorState,
   getCurrentState,
   onStateChangedListener,
   prepare,
-  VpnState,
 } from 'react-native-vpn-ipsec';
 
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export const App = () => {
   const [credentials, setCredentials] = useState({
-    address: 'lux-152-ike.whiskergalaxy.com',
-    username: '64pjyv8h-d26sazf',
-    password: 'vkhgb869nj',
+    address: 'aftabameen-vpnjantit.com',
+    username: 'aftabameen',
+    password: 'aftabameen',
     vpnType: 'ikev2',
     secret: '',
   });
@@ -138,21 +139,32 @@ export const App = () => {
                   title="Connect"
                   onPress={() =>
                     connect(
-                      // {
-                      //   type: 'ikev2',
-                      //   username: credentials.username,
-                      //   password: credentials.password,
-                      //   remoteIdentifier: credentials.address,
-                      //   localIdentifier: credentials.username,
-                      //   certificateType: 1,
-                      //   ikeSecurityAssociationParameters: 1,
-                      //   childSecurityAssociationParameters: 1,
-                      // },
-                      'my_VPM',
-                      credentials.address,
-                      credentials.username,
-                      credentials.password,
-                      credentials.secret,
+                      {
+                        name: 'Aftab Ameen Vpn',
+                        type: 'ikev2',
+                        username: '64pjyv8h-d26sazf',
+                        password: 'vkhgb869nj',
+                        remoteIdentifier: credentials.address,
+                        localIdentifier: credentials.username,
+                        authenticationMethod: 'none', /// 0,1,2
+                        certificateType: 'RSA', // 1,2,3,4,5 || RSA, ECDSA256,ECDSA384, ECDSA521,ed25519
+                        ikeSecurityAssociationParameters: {
+                          encryptionAlgorithm: 1,
+                          integrityAlgorithm: 1,
+                          diffieHellmanGroup: 1,
+                          lifetimeMinutes: 10000,
+                        },
+                        childSecurityAssociationParameters: {
+                          encryptionAlgorithm: 1,
+                          integrityAlgorithm: 1,
+                          diffieHellmanGroup: 1,
+                          lifetimeMinutes: 10000,
+                        },
+                      },
+                      'lux-152-ike.whiskergalaxy.com',
+                      '64pjyv8h-d26sazf',
+                      'vkhgb869nj',
+                      '',
                       false,
                     ).then(data => {
                       console.log(data);
