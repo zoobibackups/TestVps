@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {
   Button,
+  NativeEventEmitter,
   SafeAreaView,
   ScrollView,
   StatusBar,
@@ -11,7 +12,6 @@ import {
 } from 'react-native';
 import {
   CharonErrorState,
-  NEVPNIKEv2CertificateType,
   VpnState,
   connect,
   disconnect,
@@ -25,9 +25,9 @@ import {Colors} from 'react-native/Libraries/NewAppScreen';
 
 export const App = () => {
   const [credentials, setCredentials] = useState({
-    address: 'aftabameen-vpnjantit.com',
-    username: 'aftabameen',
-    password: 'aftabameen',
+    address: 'lux-152-ike.whiskergalaxy.com',
+    username: '64pjyv8h-d26sazf',
+    password: 'vkhgb869nj',
     vpnType: 'ikev2',
     secret: '',
   });
@@ -142,28 +142,10 @@ export const App = () => {
                       {
                         name: 'Aftab Ameen Vpn',
                         type: 'ikev2',
-                        username: '64pjyv8h-d26sazf',
-                        password: 'vkhgb869nj',
-                        remoteIdentifier: credentials.address,
-                        localIdentifier: credentials.username,
-                        authenticationMethod: 'none', /// 0,1,2
-                        certificateType: 'RSA', // 1,2,3,4,5 || RSA, ECDSA256,ECDSA384, ECDSA521,ed25519
-                        ikeSecurityAssociationParameters: {
-                          encryptionAlgorithm: 1,
-                          integrityAlgorithm: 1,
-                          diffieHellmanGroup: 1,
-                          lifetimeMinutes: 10000,
-                        },
-                        childSecurityAssociationParameters: {
-                          encryptionAlgorithm: 1,
-                          integrityAlgorithm: 1,
-                          diffieHellmanGroup: 1,
-                          lifetimeMinutes: 10000,
-                        },
                       },
-                      'lux-152-ike.whiskergalaxy.com',
-                      '64pjyv8h-d26sazf',
-                      'vkhgb869nj',
+                      credentials.address,
+                      credentials.username,
+                      credentials.password,
                       '',
                       false,
                     ).then(data => {

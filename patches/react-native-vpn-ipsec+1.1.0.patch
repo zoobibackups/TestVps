@@ -1,5 +1,5 @@
 diff --git a/node_modules/react-native-vpn-ipsec/ios/RNIpSecVpn.swift b/node_modules/react-native-vpn-ipsec/ios/RNIpSecVpn.swift
-index 977e245..f696599 100644
+index 977e245..73fa7da 100644
 --- a/node_modules/react-native-vpn-ipsec/ios/RNIpSecVpn.swift
 +++ b/node_modules/react-native-vpn-ipsec/ios/RNIpSecVpn.swift
 @@ -101,7 +101,8 @@ class RNIpSecVpn: RCTEventEmitter {
@@ -40,7 +40,7 @@ index 977e245..f696599 100644
          if !isPrepare{
              self.sendEvent(withName: "stateChanged", body: [ "state" : 1 ])
          }
-@@ -135,72 +137,52 @@ class RNIpSecVpn: RCTEventEmitter {
+@@ -135,72 +137,55 @@ class RNIpSecVpn: RCTEventEmitter {
                  print("VPN Preferences error: 1")
              } else {
                 
@@ -104,15 +104,15 @@ index 977e245..f696599 100644
 -                                print(startError ?? "Start Error")
 -                                rejecter("VPN_ERR", "VPN Preferences error: 3", startError)
 +                let vpnManager = NEVPNManager.shared()
-+                   vpnProtocol.username = "64pjyv8h-d26sazf"
-+                   vpnProtocol.serverAddress = "lux-152-ike.whiskergalaxy.com"
++                   vpnProtocol.username = username as String
++                   vpnProtocol.serverAddress = address as String
 +                   vpnProtocol.authenticationMethod = .none
 +                   vpnProtocol.useExtendedAuthentication = true
 +                   vpnProtocol.disconnectOnSleep = false
-+                   vpnProtocol.localIdentifier = "64pjyv8h-d26sazf"
-+                   vpnProtocol.remoteIdentifier = "lux-152-ike.whiskergalaxy.com"
++                   vpnProtocol.localIdentifier = username as String
++                   vpnProtocol.remoteIdentifier = address as String
 +               
-+                   kcs.save(key: "vpn_password", value:"vkhgb869nj")
++                   kcs.save(key: "vpn_password", value: password as String)
 +                   vpnProtocol.passwordReference = kcs.load(key: "vpn_password")
 +               
 +                   //let ikeSecurity = NEVPNIKEv2SecurityAssociationParameters()
@@ -131,12 +131,14 @@ index 977e245..f696599 100644
 +                    if let error = error {
 +                        NSLog("Failed to load VPN configuration: \(error.localizedDescription)")
 +                        print("Failed to load VPN configuration: \(error.localizedDescription)")
++                        rejecter("VPN_ERR", "VPN Manager cannot start tunnel", error)
 +                    } else {
 +                        vpnManager.isEnabled = true
 +                        vpnManager.saveToPreferences(completionHandler: { error in
 +                            if let error = error {
 +                                print("Failed to save VPN configuration: \(error.localizedDescription)")
 +                                NSLog("Failed to save VPN configuration: \(error.localizedDescription)")
++                                rejecter("VPN_ERR", "VPN Manager cannot start tunnel", error)
                              } else {
 -                                print("VPN started successfully..")
 -                                findEventsWithResolver(nil)
@@ -146,6 +148,7 @@ index 977e245..f696599 100644
 +                                } catch let error {
 +                                    print("Failed to start VPN connection: \(error.localizedDescription)")
 +                                    NSLog("Failed to start VPN connection: \(error.localizedDescription)")
++                                    rejecter("VPN_ERR", "VPN Manager cannot start tunnel", error)
 +                                }
                              }
 -                        }
